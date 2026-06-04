@@ -1,122 +1,101 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+// src/App.jsx
+import React from "react";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+import { supabase } from "./utils/supabaseClient";
+import userAuth from "./hooks/userAuth";
+
+import Navigation from "./components/ui/Navigation";
+import SignIn from "./components/ui/SignIn";
+
+export default function App() {
+  const { session, user, loading } = userAuth();
+
+  async function handleSignOut() {
+    try {
+      await supabase.auth.signOut();
+    } catch (err) {
+      console.error("signOut error", err);
+    }
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <Navigation user={user} onSignOut={handleSignOut}>
+      {/* Loading State */}
+      {loading && (
+        <div className="text-center py-20 text-slate-500 text-lg">
+          Loading…
         </div>
-        <div>
-          <h1 class='!text-red-500'>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+      )}
+
+      {/* Not signed in */}
+      {!loading && !session && (
+        <div className="max-w-md mx-auto bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <h2 className="text-xl font-semibold mb-2">Sign in</h2>
+          <p className="text-slate-600 mb-4">
+            Access your OpsBoard dashboard using an OAuth provider or email.
           </p>
+          <SignIn />
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      )}
 
-      <div className="ticks"></div>
+      {/* Signed in — Dashboard */}
+      {!loading && session && (
+        <div className="space-y-8">
+          <section>
+            <h2 className="text-2xl font-bold mb-2">Overview</h2>
+            <p className="text-slate-600 mb-6">
+              Welcome back, <span className="font-medium">{user?.email}</span>.
+            </p>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-indigo-50 rounded-lg p-4">
+                <p className="text-sm text-slate-500">Active</p>
+                <p className="text-2xl font-bold">128</p>
+              </div>
+
+              <div className="bg-amber-50 rounded-lg p-4">
+                <p className="text-sm text-slate-500">Errors</p>
+                <p className="text-2xl font-bold">3</p>
+              </div>
+
+              <div className="bg-emerald-50 rounded-lg p-4">
+                <p className="text-sm text-slate-500">Uptime</p>
+                <p className="text-2xl font-bold">99.99%</p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3 className="text-lg font-semibold mb-3">Quick Links</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <a
+                href="https://vite.dev/"
+                target="_blank"
+                rel="noreferrer"
+                className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm hover:bg-slate-50 transition"
+              >
+                <h4 className="font-medium mb-1">Documentation</h4>
+                <p className="text-sm text-slate-600">
+                  Guides, API references, and examples.
+                </p>
               </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
+
+              <a
+                href="https://github.com/vitejs/vite"
+                target="_blank"
+                rel="noreferrer"
+                className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm hover:bg-slate-50 transition"
+              >
+                <h4 className="font-medium mb-1">Community</h4>
+                <p className="text-sm text-slate-600">
+                  Join the conversation on GitHub & Discord.
+                </p>
               </a>
-            </li>
-          </ul>
+            </div>
+          </section>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      )}
+    </Navigation>
+  );
 }
-
-export default App
