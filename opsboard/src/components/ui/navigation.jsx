@@ -87,13 +87,13 @@ export default function Navigation({ user, onSignOut, children }) {
                 </div>
 
                 {/* Dropdown */}
-                <div className="absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-md shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition">
+                <div className="absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-md shadow-lg opacity-0 group-hover:opacity-100 pointer-events-auto group-hover:pointer-events-auto transition group-hover:opacity-100 duration-200">
                   <div className="px-4 py-2 text-xs text-slate-500 border-b border-slate-100">
                     {user?.email}
                   </div>
                   <button
                     onClick={onSignOut}
-                    className="w-full text-left px-4 py-2 text-sm hover:bg-slate-100"
+                    className="w-full text-left px-4 py-2 text-sm hover:bg-slate-200"
                   >
                     Sign out
                   </button>

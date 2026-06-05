@@ -92,9 +92,11 @@ export default function Tasks() {
     try {
       await deleteTask(id);
       showToast("success", "Task deleted.");
+      setConfirmDelete(null)
       load();
     } catch (err) {
       console.error(err);
+      setConfirmDelete(null)
       showToast("error", "Failed to delete task.");
     }
   }
