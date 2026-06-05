@@ -65,7 +65,7 @@ export default function Navigation({ user, onSignOut, children }) {
             </button>
 
             {/* Search (desktop) */}
-            <div className="relative flex-1 max-w-md mx-4 hidden md:block">
+            <div className="relative w-full max-w-md ml-6 hidden md:block">
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
               <input
                 type="text"

@@ -90,8 +90,4 @@ function createKpiSummary(data = {}) {
   };
 }
 
-module.exports = {
-  createTask,
-  createIncident,
-  createKpiSummary,
-};
+export { createTask, createIncident, createKpiSummary };
