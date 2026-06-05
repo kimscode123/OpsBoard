@@ -5,7 +5,7 @@ import "./App.css";
 import { supabase } from "./utils/supabaseClient";
 import userAuth from "./hooks/userAuth";
 
-import Navigation from "./components/ui/Navigation";
+import Navigation from "./components/ui/navigation";
 import SignIn from "./components/ui/SignIn";
 import Tasks from "./pages/Tasks";
 
